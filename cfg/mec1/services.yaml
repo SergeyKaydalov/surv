@@ -1,0 +1,31 @@
+apiVersion: edgefs.rook.io/v1
+kind: NFS
+metadata:
+  name: nfs-mec1
+  namespace: rook-edgefs-mec1
+spec:
+  instances: 1
+  annotations:
+---
+apiVersion: edgefs.rook.io/v1
+kind: ISGW
+metadata:
+  name: isgw-stream          # Inter-Segment Gateway service name
+  namespace: rook-edgefs-mec1
+spec:
+  direction: "send+receive"                  # I/O flow direction: send, receive or send-receive
+  remoteURL: "ccow://rook-edgefs-isgw-isgw-stream.rook-edgefs-aggr:14000"     # I/O flow with destination antoher EdgeFS cluster, pointing to ISGW endpoint service
+  metadataOnly: all                         # Replicate only metadata (all or versions), thus enable on-demand fetch at destination (ccow protocol only)
+  annotations:
+---
+apiVersion: edgefs.rook.io/v1
+kind: ISGW
+metadata:
+  name: isgw-capture          # Inter-Segment Gateway service name
+  namespace: rook-edgefs-mec1
+spec:
+  direction: "send+receive"                  # I/O flow direction: send, receive or send-receive
+  remoteURL: "ccow://rook-edgefs-isgw-isgw-capture.rook-edgefs-aggr:14001"     # I/O flow with destination antoher EdgeFS cluster, pointing to ISGW endpoint service
+  localAddr: 0.0.0.0:14001                  # Override endpoint listening port (default 0.0.0.0:14000)
+  annotations:
+
