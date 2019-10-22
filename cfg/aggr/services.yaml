@@ -11,68 +11,39 @@ spec:
 apiVersion: edgefs.rook.io/v1
 kind: ISGW
 metadata:
-  name: isgw-stream          # Inter-Segment Gateway service name
+  name: isgw-stream          # Inter-Segment Gateway link for on-demand video streams
   namespace: rook-edgefs-aggr
 spec:
-  direction: "send+receive"                  # I/O flow direction: send, receive or send-receive
-  remoteURL: "ccow://rook-edgefs-isgw-isgw-stream.rook-edgefs-mec1:14000"     # I/O flow with destination antoher EdgeFS cluster, pointing to ISGW endpoint service
-  dynamicFetchAddr: rook-edgefs-isgw-isgw-stream.rook-edgefs-aggr:49678      # Override dynamic fetch service host:port (default 49678)
+  direction: "send+receive"  # I/O flow direction: send, receive or send-receive
+  remoteURL: "ccow://rook-edgefs-isgw-isgw-stream.rook-edgefs-mec1:14000"    # I/O flow with destination antoher EdgeFS cluster, pointing to ISGW endpoint service
+  dynamicFetchAddr: rook-edgefs-isgw-isgw-stream.rook-edgefs-aggr:49678      # Dynamic fetch service host:port
   annotations:
 ---
 
 apiVersion: edgefs.rook.io/v1
 kind: ISGW
 metadata:
-  name: isgw-capture          # Inter-Segment Gateway service name
+  name: isgw-capture          # Inter-Segment Gateway link for fully replicated data (pictures)
   namespace: rook-edgefs-aggr
 spec:
-  direction: "send+receive"                  # I/O flow direction: send, receive or send-receive
+  direction: "send+receive"   # I/O flow direction: send, receive or send-receive
   remoteURL: "ccow://rook-edgefs-isgw-isgw-capture.rook-edgefs-mec1:14001"     # I/O flow with destination antoher EdgeFS cluster, pointing to ISGW endpoint service
-  localAddr: 0.0.0.0:14001                   # Override endpoint listening port (default 0.0.0.0:14000)
+  localAddr: 0.0.0.0:14001     # Endpoint listening port
   annotations:
 ---
 
 apiVersion: edgefs.rook.io/v1
-kind: S3
+kind: S3                      # S3 gateway to access captured videos and streams from remote
 metadata:
   name: s3-aggr
   namespace: rook-edgefs-aggr
 spec:
   instances: 1
-  #s3type: s3s                    # s3 (default) for path style, s3s for buckets as DNS style
-  serviceType: NodePort          # define ServiceType (default ClusterIP)
-  externalPort: 30303            # define NodePort for HTTP port (default auto)
-  secureExternalPort: 30443      # define NodePort for HTTPS port (default auto)
-  #port: 4500                     # HTTP port (default is 9982 or 9983 for s3s)
-  #securePort: 4501               # HTTPS port (default is 8443 or 8444 for s3s)
+  #s3type: s3s                # s3 (default) for path style, s3s for buckets as DNS style
+  serviceType: NodePort       # define ServiceType (default ClusterIP)
+  externalPort: 30303         # define NodePort for HTTP port (default auto)
+  secureExternalPort: 30443   # define NodePort for HTTPS port (default auto)
+  #port: 4500                 # HTTP port (default is 9982 or 9983 for s3s)
+  #securePort: 4501           # HTTPS port (default is 8443 or 8444 for s3s)
   #sslCertificateRef: ssl-secret
-  #placement:
-  #  nodeAffinity:
-  #    requiredDuringSchedulingIgnoredDuringExecution:
-  #      nodeSelectorTerms:
-  #      - matchExpressions:
-  #        - key: rook-edgefs-nodetype
-  #          operator: In
-  #          values:
-  #          - gateway
-  #  tolerations:
-  #  - key: rook-edgefs-nodetype
-  #    operator: Exists
-  #  podAffinity:
-  #  podAntiAffinity:
-  #resources:
-  #  limits:
-  #    cpu: "2"
-  #    memory: "4Gi"
-  #  requests:
-  #    cpu: "2"
-  #    memory: "4Gi"
-  # A key value list of annotations
-  # A key value list of annotations
-  annotations:
-  #  all:
-  #    key: value
-  #  mgr:
-  #  prepare:
-  #  target:
 

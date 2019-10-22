@@ -45,13 +45,13 @@ def main(argv):
                     face_img = frame[y:y+h, x:x+w]
                     start = datetime.now()
                     date_time = start.strftime("%m-%d-%Y-%H:%M:%S")
-                    name = '/media/capture/face_'+date_time+str(index)+'.jpg'
+                    name = '/media/capture/mec1/face_'+date_time+str(index)+'.jpg'
                     print("Capturing to %s" % (name))
                     cv2.imwrite(name, face_img)
                     index = index + 1
                 if not cap_trg:
                     cap_trg = True
-                    stream = '/media/stream/vid_' + date_time +'.avi'
+                    stream = '/media/video/mec1/vid_' + date_time +'.avi'
                     print("Starting new live stream to %s" % (stream))
                     out = cv2.VideoWriter(stream, cv2.VideoWriter_fourcc('M','J','P','G'), fps, (width,height))
         if show_frame:
