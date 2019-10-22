@@ -140,8 +140,8 @@ spec:
     - path: "/media/nvme0n1"       # if the RTKVS is chosen, then the directory will be used as a journal to store metadata. Mandatory for RTKVS.
     useAllDevices: false
     config:
-      useRtkvsBackend: "kvssd"     # Use the RTKVS store driver. Value is the backend ID. The "kvssd" is for Samsung's KV SSD
-      rtPLevelOverride: "16"       # enable large device partitioning, only needed if automatic not working
+      useRtkvsBackend: "kvssd"     # Use the RTKVS engine. The "kvssd" is for Samsung's KV SSD
+      rtPLevelOverride: "16"
       maxSizeGB: "32"              # RTKVS: max.space allocated for a journal
       sync: "0"                    # highest performance, consistent on pod/software failures
       walMode: "off"               # Write-ahead-log mode disable (KV SSD performance)

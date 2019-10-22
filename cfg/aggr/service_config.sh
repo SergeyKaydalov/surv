@@ -15,12 +15,13 @@ efscli bucket create sfo/terminal1/capture -s 128k -t 1
 
 # Create NFS server to access remote video and captures
 efscli service create nfs nfs-aggr
-efscli service serve nfs-aggr sfo/terminal1/stream
+efscli service config nfs-aggr X-MH-ImmDir 1
+efscli service serve nfs-aggr sfo/terminal1/video
 efscli service serve nfs-aggr sfo/teminal1/capture
 
 # Create an Inter-Segment Link for video streams (on-demand)
 efscli service create isgw isgw-stream
-efscli service serve isgw-stream sfo/terminal1/stream,pause
+efscli service serve isgw-stream sfo/terminal1/video,pause
 efscli service config isgw-stream X-Status enabled                                   
 efscli service config isgw-stream X-ISGW-Replication 3                               
 efscli service config isgw-stream X-ISGW-Direction 3                                 

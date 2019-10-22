@@ -9,6 +9,6 @@ nfs_ip=$(kubectl get svc -n rook-edgefs-mec1 rook-edgefs-nfs-nfs-mec1 | grep Clu
 echo MEC addr $mec_addr NFS service $nfs_ip
 
 # mount MEC's NFS shares
-ssh root@$mec_addr "bash -c 'mount $nfs_ip:/terminal1/video /media/video && mount $nfs_ip:/terminal1/capture /media/capture'" && echo "NFS share mounted to /media/stream and /media/capture folders of the MEC1 server"
+ssh root@$mec_addr "bash -c 'mount -t nfs -o actimeo=1 $nfs_ip:/terminal1/video /media/video && mount -t nfs -o actimeo=1 $nfs_ip:/terminal1/capture /media/capture'" && echo "NFS share mounted to /media/stream and /media/capture folders of the MEC1 server"
 
 

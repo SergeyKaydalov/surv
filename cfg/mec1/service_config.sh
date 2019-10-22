@@ -11,17 +11,18 @@ source /opt/nedge/env.sh
 efscli system init -f
 efscli cluster create sfo
 efscli tenant create sfo/terminal1
-efscli bucket create sfo/terminal1/stream -s 128k
+efscli bucket create sfo/terminal1/video -s 128k
 efscli bucket create sfo/terminal1/capture -s 128k
 
 # create a NFS service on a MEC device to store video and pictures
 efscli service create nfs nfs-mec1
-efscli service serve nfs-mec1 sfo/terminal1/stream
+efscli service config nfsmec1 X-MH-ImmDir 1
+efscli service serve nfs-mec1 sfo/terminal1/video
 efscli service serve nfs-mec1 sfo/terminal1/capture
 
 # An inter-sergement link with metadata-only replication for videos
 efscli service create isgw isgw-stream
-efscli service serve isgw-stream sfo/terminal1/stream                                      
+efscli service serve isgw-stream sfo/terminal1/video                                     
 efscli service config isgw-stream X-Status enabled                                   
 efscli service config isgw-stream X-ISGW-Replication 3                               
 efscli service config isgw-stream X-ISGW-MDOnly 2                                    
