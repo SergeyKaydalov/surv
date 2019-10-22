@@ -54,10 +54,10 @@ def main(argv):
                     stream = '/media/video/vid_' + date_time +'.avi'
                     print("Starting new live stream to %s" % (stream))
                     out = cv2.VideoWriter(stream, cv2.VideoWriter_fourcc('M','J','P','G'), fps, (width,height))
+        # Draw rectangle around the faces
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
         if show_frame:
-            # Draw rectangle around the faces
-            for (x, y, w, h) in faces:
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
             # Display the output
             cv2.imshow('img', frame)
         n_faces_prev = n_faces
