@@ -22,4 +22,7 @@ kubectl exec -it -n rook-edgefs-$node rook-edgefs-target-0 -c daemon -- bash -c 
 
 kubectl create -f $path/services.yaml
 
+if [ -f $path/postprocess.sh ]; then
+	$path/postprocess.sh
+fi
  
